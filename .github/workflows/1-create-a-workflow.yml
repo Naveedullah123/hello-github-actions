@@ -1,4 +1,4 @@
-name: Step 1, Create a workflow
+name: Post welcome comment
 
 # This step triggers after every push to welcome-workflow.
 # This workflow updates from step 1 to step 2.
@@ -20,10 +20,10 @@ permissions:
 jobs:
   # Get the current step to only run the main job when the learner is on the same step.
   get_current_step:
-    name: Check current step number
+    name: Post welcome comment
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: gh pr comment SPR_URL ....body "Welcome to the repository!"
         uses: actions/checkout@v3
       - id: get_step
         run: |
