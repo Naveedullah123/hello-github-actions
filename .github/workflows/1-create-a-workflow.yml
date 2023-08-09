@@ -1,36 +1,17 @@
-name: Step 1, Create a workflow
-
-# This step triggers after every push to welcome-workflow.
-# This workflow updates from step 1 to step 2.
-
-# This will run every time we push to welcome-workflow.
-# Reference: https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows
-on:
-  workflow_dispatch:
-  push:
+name: Welcome post comment
+on: 
+  pull_request:
+    types: [opened]
     branches:
-      - welcome-workflow
-
-# Reference: https://docs.github.com/en/actions/security-guides/automatic-token-authentication
-permissions:
-  # Need `contents: read` to checkout the repository.
-  # Need `contents: write` to update the step metadata.
-  contents: write
-
 jobs:
-  # Get the current step to only run the main job when the learner is on the same step.
-  get_current_step:
-    name: Check current step number
+ build:
+  name: post welcome comment
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - id: get_step
-        run: |
-          echo "current_step=$(cat ./.github/steps/-step.txt)" >> $GITHUB_OUTPUT
-    outputs:
-      current_step: ${{ steps.get_step.outputs.current_step }}
-
+      - run: gh pr comment SPR_URL .....body "welcome to the repository!"
+         env:
+           GIHUB_TOKEN: ${{secrets. GITHUB_TOKEN }}
+            PR_URL: ${{github.event.pull_request.html_url }}
   on_create_workflow:
     name: On create workflow
     needs: get_current_step
